@@ -1,0 +1,30 @@
+.datepicker{
+	padding: 0.5rem;
+}
+
+.dates, .header{
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.day-item, .date-item{
+	padding: 0.5rem;
+	width: 2.25rem;
+}
+
+.date-item:hover{
+	background: #A9B5BC;
+}
+
+.day-item{
+	border-bottom: dashed 1px #E0E0E0;
+	margin-bottom: 0.5rem;
+}
+
+.date-item:nth-child(7n), .date-item:nth-child(7n+1){
+	color: red;
+  }
+
+.date-item.passive{
+	color: #E0E0E0;
+}

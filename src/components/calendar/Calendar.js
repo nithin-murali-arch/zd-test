@@ -15,9 +15,6 @@ export default class Calendar extends Component{
 			currentMonth: date.getMonth(),
 			currentDate: date.getDate(),
 			currentYear: date.getFullYear(),
-			todaysMonth: date.getMonth(),
-			todaysDate: date.getDate(),
-			todaysYear: date.getFullYear(),
 			chosenYear: date.getFullYear(),
 			chosenMonth: date.getMonth(),
 			chosenDate: null,
@@ -30,7 +27,15 @@ export default class Calendar extends Component{
 	}
 
 	updateState(key, value){
-
+		let obj;
+		if(typeof key === 'object'){
+			obj = key;
+		}
+		else{
+			obj = {};
+			obj[key] = value;
+		}
+		this.setState(obj);
 	}
 
 	changeView(){
@@ -60,29 +65,33 @@ export default class Calendar extends Component{
 		}
 	}
 
-	nextMonth(){
-		if(this.state.chosenMonth === 11){
-			this.setState({chosenMonth: 0, chosenYear: this.state.chosenYear + 1});
+	getNextMonth(chosenMonth, chosenYear){
+		let updateStateFor;
+		if(chosenMonth === 11){
+			updateStateFor = {chosenMonth: 0, chosenYear: chosenYear + 1};
 		}
 		else{
-			this.setState({chosenMonth: this.state.chosenMonth + 1});
+			updateStateFor = {chosenMonth: chosenMonth + 1};
 		}
+		return updateStateFor;
 	}
 
-	prevMonth(){
-		if(this.state.chosenMonth === 0){
-			this.setState({chosenMonth: 11, chosenYear: this.state.chosenYear - 1});
+	getPrevMonth(chosenMonth, chosenYear){
+		let updateStateFor;
+		if(chosenMonth === 0){
+			updateStateFor = {chosenMonth: 11, chosenYear: chosenYear - 1};
 		}
 		else{
-			this.setState({chosenMonth: this.state.chosenMonth - 1});
+			updateStateFor = {chosenMonth: chosenMonth - 1};
 		}
+		return updateStateFor;
 	}
 
 	calendarActionsHandler(action){
 		if(this.state.view === 'calendar'){
 			switch(action){
-				case 'right': this.nextMonth();break;
-				case 'left': this.prevMonth();break;
+				case 'right': this.setState(this.getNextMonth(this.state.chosenMonth, this.state.chosenYear));break;
+				case 'left': this.setState(this.getPrevMonth(this.state.chosenMonth, this.state.chosenYear));break;
 				case 'hard-right': this.setState({chosenYear: this.state.chosenYear + 1});break;
 				case 'hard-left': this.setState({chosenYear: this.state.chosenYear - 1});break;
 			}
@@ -187,7 +196,7 @@ export default class Calendar extends Component{
 		let topContent;
 		switch(this.state.view){
 			case 'calendar': {
-				renderComponent = <DatePicker {...this.state} updateParentState={this.updateState.bind(this)}></DatePicker>;
+				renderComponent = <DatePicker {...this.state} formatMonth={this.formatMonth} getPrevMonth={this.getPrevMonth} getNextMonth={this.getNextMonth} updateParentState={this.updateState.bind(this)}></DatePicker>;
 				topContent = `${this.formatMonth(this.state.chosenMonth)} ${this.state.chosenYear}`;
 				break;
 			}
