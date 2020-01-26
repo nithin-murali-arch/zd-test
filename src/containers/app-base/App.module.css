@@ -1,9 +1,9 @@
 .app_tab{
-	margin-left: auto;
-	width: 354px;
+	/* margin-left: auto; */
+	width: 320px;
 	height: 100%;
-	background: #E0E0E0;
-	padding: 1rem;
+	/* background: #E0E0E0; */
+	/* padding: 1rem; */
 }
 
 .date_placeholder{

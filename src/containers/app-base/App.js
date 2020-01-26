@@ -25,11 +25,10 @@ export default class App extends Component{
 	launchModal(){
 		this.state.zafClient.invoke('instances.create', {
 			location: 'modal',
-			url: 'image.html#' + encodeURIComponent(this.state.imageURL)
+			url: 'assets/image.html#' + encodeURIComponent(this.state.imageURL)
 		}).then((modalContext) => {
 			// The modal is on the screen now!
 			let modalClient = this.state.zafClient.instance(modalContext['instances.create'][0].instanceGuid);
-			
 			modalClient.on('modal.close', function() {
 			  // The modal has been closed.
 			});
