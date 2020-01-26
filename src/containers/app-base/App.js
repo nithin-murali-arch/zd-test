@@ -12,6 +12,7 @@ export default class App extends Component{
 		let currentMonth = `0${date.getMonth()+1}`.slice(-2);
 		let currentDate = `0${date.getDate()}`.slice(-2);
 		this.state.date = `${date.getFullYear()}-${currentMonth}-${currentDate}`;
+		this.state.zafClient = ZAFClient.init();// eslint-disable-line no-undef
 		this.updateChosenDate(this.state.date);
 	}
 
@@ -22,13 +23,12 @@ export default class App extends Component{
 	}
 
 	launchModal(){
-		const client = ZAFClient.init();// eslint-disable-line no-undef
-		client.invoke('instances.create', {
+		this.state.zafClient.invoke('instances.create', {
 			location: 'modal',
 			url: 'image.html#' + encodeURIComponent(this.state.imageURL)
-		}).then(function(modalContext) {
+		}).then((modalContext) => {
 			// The modal is on the screen now!
-			let modalClient = client.instance(modalContext['instances.create'][0].instanceGuid);
+			let modalClient = this.state.zafClient.instance(modalContext['instances.create'][0].instanceGuid);
 			
 			modalClient.on('modal.close', function() {
 			  // The modal has been closed.
