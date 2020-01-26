@@ -45,3 +45,11 @@ code {
 .dn{
 	display: none;
 }
+
+.pR{
+	position: relative;
+}
+
+.pA{
+	position: absolute;
+}

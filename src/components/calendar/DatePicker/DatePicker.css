@@ -1,7 +1,3 @@
-.datepicker{
-	padding: 0.5rem;
-}
-
 .dates, .header{
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
@@ -12,8 +8,21 @@
 	width: 2.25rem;
 }
 
-.date-item:hover{
+.date-item.disabled{
+	cursor: not-allowed;
+}
+
+.date-item:not(.disabled):not(.selected):hover{
 	background: #A9B5BC;
+}
+
+.date-item.today{
+	border-bottom: dashed 0.125rem #DD1C1A;
+}
+
+.date-item.selected{
+	background: #06AED5;
+	color: #FFFFFF;
 }
 
 .day-item{
@@ -25,6 +34,6 @@
 	color: red;
   }
 
-.date-item.passive{
+.date-item.passive, .date-item.disabled{
 	color: #E0E0E0;
 }

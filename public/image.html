@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+	<script>
+		const img = document.createElement('img');
+		const url = decodeURIComponent(window.location.hash.substring(1));
+		img.src = url;
+		img.style.width = '100%';
+		img.style.height = '100%';
+		document.body.appendChild(img);
+	</script>
+  </body>
+</html>

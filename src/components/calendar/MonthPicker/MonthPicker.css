@@ -1,0 +1,17 @@
+.calendar-container{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.calendar-container > *{
+	padding: 0.5rem;
+}
+
+.calendar-month.selected{
+	background: #06AED5;
+	color: #FFFFFF;
+}
+
+.calendar-container > *:hover{
+	background: #A9B5BC;
+}

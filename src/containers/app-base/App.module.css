@@ -1,7 +1,21 @@
 .app_tab{
-	float: right;
+	margin-left: auto;
 	width: 354px;
 	height: 100%;
 	background: #E0E0E0;
 	padding: 1rem;
+}
+
+.date_placeholder{
+	margin: 1rem 0;
+	display: inline-block;
+}
+
+.image_ctr:nth-child(1){
+	margin: 1rem 0;
+}
+
+.days_image{
+	width: 15rem;
+	cursor: pointer;
 }

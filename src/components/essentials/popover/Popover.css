@@ -1,0 +1,24 @@
+.popover-ctr{
+	z-index: 1000;
+}
+.popover-ctr:after, .popover-ctr:before{
+	content: '';
+	width: 0.75rem;
+	height: 0.75rem;
+	display: block;	
+	background: #0A2342;
+	border: solid 0.0625rem #2A2B2A;
+	border-bottom-width: 0;
+	border-right-width: 0;
+	position:absolute;
+	top: 0;
+	left: 0;
+	top: -0.45rem;
+	left: 0.25rem;
+	transform: rotate(45deg);
+	z-index: -1;
+}
+
+.popover-ctr:before{
+	top: -0.35rem;
+}

@@ -9,6 +9,10 @@
 	padding: 0.5rem;
 }
 
+.date-component-ctr{
+	padding: 0.5rem;
+}
+
 .calendar-ctr, .date-component-ctr{
 	background: #FFFFFF;
 }

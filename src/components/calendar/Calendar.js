@@ -17,12 +17,16 @@ export default class Calendar extends Component{
 			currentYear: date.getFullYear(),
 			chosenYear: date.getFullYear(),
 			chosenMonth: date.getMonth(),
-			chosenDate: null,
+			calendarMonth: date.getMonth(),
+			calendarYear: date.getFullYear(),
+			today: date,
+			chosenDate: date.getDate(),
 			view: 'calendar',
 			yearRangeStart: date.getFullYear() - 9,
 			yearRangeEnd: date.getFullYear() ,
 			centuryRangeStart: (date.getFullYear() - (date.getFullYear()%100)) + 1,
-			centuryRangeEnd: (date.getFullYear() - (date.getFullYear()%100)) + 100
+			centuryRangeEnd: (date.getFullYear() - (date.getFullYear()%100)) + 100,
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 		}
 	}
 
@@ -35,31 +39,40 @@ export default class Calendar extends Component{
 			obj = {};
 			obj[key] = value;
 		}
-		this.setState(obj);
+		this.setState(obj, ()=>{
+			if(obj.chosenMonth || obj.chosenDate || obj.chosenYear){
+				let month = `0${this.state.chosenMonth+1}`.slice(-2);
+				let date = `0${this.state.chosenDate}`.slice(-2);
+				this.props.updateImage(`${this.state.chosenYear}-${month}-${date}`);
+			}
+		});
 	}
 
 	changeView(){
 		let newView;
 		const date = new Date();
 		let extras = {};
-		switch(this.state.view){
-			case 'calendar': newView = 'monthPicker';break;
-			case 'monthPicker': {
-				newView = 'yearPicker';
-				this.setState({
-					yearRangeStart: date.getFullYear() - 9,
-					yearRangeEnd: date.getFullYear() 
-				});
-				break;
-			}
-			default: {
-				newView = 'centuryPicker';
-				extras ={
-					centuryRangeStart: (date.getFullYear() - (date.getFullYear()%100)) + 1,
-					centuryRangeEnd: (date.getFullYear() - (date.getFullYear()%100)) + 100
-				};
-			}
-		}
+		// TODO - Commented out to reduce Complexity, uncomment when needed
+		newView = 'monthPicker';
+		// switch(this.state.view){
+			
+			// case 'calendar': newView = 'monthPicker';break;
+			// case 'monthPicker': {
+			// 	newView = 'yearPicker';
+			// 	this.setState({
+			// 		yearRangeStart: date.getFullYear() - 9,
+			// 		yearRangeEnd: date.getFullYear() 
+			// 	});
+			// 	break;
+			// }
+			// default: {
+			// 	newView = 'centuryPicker';
+			// 	extras ={
+			// 		centuryRangeStart: (date.getFullYear() - (date.getFullYear()%100)) + 1,
+			// 		centuryRangeEnd: (date.getFullYear() - (date.getFullYear()%100)) + 100
+			// 	};
+			// }
+		// }
 		if(this.state.view !== newView){
 			this.setState({view: newView, ...extras});
 		}
@@ -90,18 +103,34 @@ export default class Calendar extends Component{
 	calendarActionsHandler(action){
 		if(this.state.view === 'calendar'){
 			switch(action){
-				case 'right': this.setState(this.getNextMonth(this.state.chosenMonth, this.state.chosenYear));break;
-				case 'left': this.setState(this.getPrevMonth(this.state.chosenMonth, this.state.chosenYear));break;
-				case 'hard-right': this.setState({chosenYear: this.state.chosenYear + 1});break;
-				case 'hard-left': this.setState({chosenYear: this.state.chosenYear - 1});break;
+				case 'right': {
+					let {chosenMonth:calendarMonth, chosenYear:calendarYear} = this.getNextMonth(this.state.calendarMonth, this.state.calendarYear);
+					let updateObj = {calendarMonth};
+					if(calendarYear){
+						updateObj.calendarYear = calendarYear;
+					}
+					this.setState(updateObj);
+					break;
+				}
+				case 'left': {
+					let {chosenMonth:calendarMonth, chosenYear:calendarYear} = this.getPrevMonth(this.state.calendarMonth, this.state.calendarYear);
+					let updateObj = {calendarMonth};
+					if(calendarYear){
+						updateObj.calendarYear = calendarYear;
+					}
+					this.setState(updateObj);
+					break;
+				}
+				case 'hard-right': this.setState({calendarYear: this.state.calendarYear + 1});break;
+				case 'hard-left': this.setState({calendarYear: this.state.calendarYear - 1});break;
 			}
 		}
 		else if(this.state.view === 'monthPicker'){
 			switch(action){
-				case 'right': this.setState({chosenYear: this.state.chosenYear + 1});break;
-				case 'left': this.setState({chosenYear: this.state.chosenYear - 1});break;
-				case 'hard-right': this.setState({chosenYear: this.state.chosenYear + 10});break;
-				case 'hard-left': this.setState({chosenYear: this.state.chosenYear - 10});break;
+				case 'right': this.setState({calendarYear: this.state.calendarYear + 1});break;
+				case 'left': this.setState({calendarYear: this.state.calendarYear - 1});break;
+				case 'hard-right': this.setState({calendarYear: this.state.calendarYear + 10});break;
+				case 'hard-left': this.setState({calendarYear: this.state.calendarYear - 10});break;
 			}
 		}
 		else if(this.state.view === 'yearPicker'){
@@ -174,21 +203,7 @@ export default class Calendar extends Component{
 	}
 
 	formatMonth(month){
-		switch(month){
-			case 0: return 'January';
-			case 1: return 'February';
-			case 2: return 'March';
-			case 3: return 'April';
-			case 4: return 'May';
-			case 5: return 'June';
-			case 6: return 'July';
-			case 7: return 'August';
-			case 8: return 'September';
-			case 9: return 'October';
-			case 10: return 'November';
-			case 11: return 'December';
-			default: return ''
-		}
+		return this.state.months[month];
 	}
 
 	render(){
@@ -196,13 +211,13 @@ export default class Calendar extends Component{
 		let topContent;
 		switch(this.state.view){
 			case 'calendar': {
-				renderComponent = <DatePicker {...this.state} formatMonth={this.formatMonth} getPrevMonth={this.getPrevMonth} getNextMonth={this.getNextMonth} updateParentState={this.updateState.bind(this)}></DatePicker>;
-				topContent = `${this.formatMonth(this.state.chosenMonth)} ${this.state.chosenYear}`;
+				renderComponent = <DatePicker {...this.state} formatMonth={this.formatMonth.bind(this)} getPrevMonth={this.getPrevMonth} getNextMonth={this.getNextMonth} updateParentState={this.updateState.bind(this)}></DatePicker>;
+				topContent = `${this.formatMonth(this.state.calendarMonth)} ${this.state.calendarYear}`;
 				break;
 			}
 			case 'monthPicker': {
 				renderComponent = <MonthPicker {...this.state} updateParentState={this.updateState.bind(this)}></MonthPicker>;
-				topContent = this.state.chosenYear;
+				topContent = this.state.calendarYear;
 				break;
 			}
 			case 'yearPicker':  {
