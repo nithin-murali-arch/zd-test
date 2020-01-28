@@ -13,13 +13,20 @@ export default class App extends Component{
 		let currentDate = `0${date.getDate()}`.slice(-2);
 		this.state.date = `${date.getFullYear()}-${currentMonth}-${currentDate}`;
 		this.state.zafClient = ZAFClient.init();// eslint-disable-line no-undef
+		this.imagesCache = {};
 		this.updateChosenDate(this.state.date);
 	}
 
 	async updateChosenDate(date){
-		utils.loadNasaImage(date).then((res)=>{
-			this.setState({imageURL: res.url, date, description: res.explanation});
-		});
+		let imageObj = this.imagesCache[date];
+		if(imageObj){
+			this.setState({imageURL: imageObj.url, date, description: imageObj.explanation});
+		}
+		else{
+			utils.loadNasaImage(date).then((res)=>{
+				this.setState({imageURL: res.url, date, description: res.explanation});
+			});
+		}
 	}
 
 	launchModal(){
@@ -29,6 +36,7 @@ export default class App extends Component{
 		}).then((modalContext) => {
 			// The modal is on the screen now!
 			let modalClient = this.state.zafClient.instance(modalContext['instances.create'][0].instanceGuid);
+			modalClient.invoke("resize", {width: "80vw", height: "80vh"});
 			modalClient.on('modal.close', function() {
 			  // The modal has been closed.
 			});
@@ -48,7 +56,7 @@ export default class App extends Component{
 					{imageComponent}
 				</div>
 				<div className={styles.calendar_ctr}>
-					<Calendar updateImage={this.updateChosenDate.bind(this)}></Calendar>
+					<Calendar imagesCache={this.imagesCache} updateImage={this.updateChosenDate.bind(this)}></Calendar>
 				</div>
 			</div>
 		);

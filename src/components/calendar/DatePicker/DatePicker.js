@@ -113,7 +113,7 @@ export default class DatePicker extends Component{
 			dates = dates.concat(this.numberRangeToArray(1, 6 - lastDay).map(this.convertToObj.bind(this, {type: 'passive', month: nextMonth, year})));
 		}
 
-		let targetElement = this.state.targetElement ? <ImageHolder targetElement={this.state.targetElement}/> : null;
+		let targetElement = this.state.targetElement ? <ImageHolder imagesCache={this.state.imagesCache} targetElement={this.state.targetElement}/> : null;
 
 		return (
 			<div className="datepicker pR flex--column" onClick={(evt) => this.clickHandler(evt)} onMouseOver={(evt) =>this.dateMouseoverHandler(evt)} onMouseOut={(evt) =>this.dateMouseoutHandler(evt)}>

@@ -2,17 +2,18 @@
 	/* margin-left: auto; */
 	width: 320px;
 	height: 100%;
+	font-size: 0.875rem;
 	/* background: #E0E0E0; */
 	/* padding: 1rem; */
 }
 
 .date_placeholder{
-	margin: 1rem 0;
+	margin: 0.5rem 0;
 	display: inline-block;
 }
 
 .image_ctr:nth-child(1){
-	margin: 1rem 0;
+	margin-bottom: 1rem;
 }
 
 .days_image{

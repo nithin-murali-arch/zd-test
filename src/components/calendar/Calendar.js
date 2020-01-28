@@ -26,8 +26,9 @@ export default class Calendar extends Component{
 			yearRangeEnd: date.getFullYear() ,
 			centuryRangeStart: (date.getFullYear() - (date.getFullYear()%100)) + 1,
 			centuryRangeEnd: (date.getFullYear() - (date.getFullYear()%100)) + 100,
-			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-		}
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			imagesCache: this.props.imagesCache
+		};
 	}
 
 	updateState(key, value){

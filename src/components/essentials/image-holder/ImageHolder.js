@@ -15,7 +15,11 @@ export default class ImageHolder extends Component{
 		let date = props.targetElement.getAttribute('value');
 		utils.loadNasaImage(date).then((res)=>{
 			if(!this.unMounted){
-				this.setState({imageURL: res.url});	
+				this.setState({imageURL: res.url});
+				this.props.imagesCache[date] = {
+					url: res.url,
+					explanation: res.explanation
+				};
 			}
 		});
 	}
